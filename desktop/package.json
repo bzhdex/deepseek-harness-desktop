@@ -1,0 +1,36 @@
+{
+  "name": "deepseek-harness-desktop",
+  "productName": "DeepSeek Harness",
+  "version": "0.1.0",
+  "description": "Windows 桌面壳封装：把 DeepSeek Harness (@deepseek-ai/dsh) 的 Web UI 打包为可安装的 Windows 桌面应用。仅做壳层封装，不改动 harness 核心。",
+  "author": {
+    "name": "DeepSeek Harness Desktop (community packaging)",
+    "email": "noreply@example.invalid"
+  },
+  "license": "MIT",
+  "main": "src/main/index.js",
+  "private": true,
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "bundle:icons": "node scripts/gen-icons.mjs",
+    "bundle:node": "node scripts/fetch-node.mjs",
+    "bundle:harness": "node scripts/bundle-harness.mjs",
+    "bundle": "npm run bundle:icons && npm run bundle:node && npm run bundle:harness",
+    "dist": "npm run bundle && electron-builder --win nsis",
+    "dist:dir": "npm run bundle && electron-builder --win dir",
+    "pack": "electron-builder --dir",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "electron": "^37.10.3",
+    "electron-builder": "^26.0.12",
+    "sharp": "^0.34.3"
+  }
+}

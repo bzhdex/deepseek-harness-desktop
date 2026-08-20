@@ -1,0 +1,9 @@
+{
+  "name": "dsh-desktop-harness",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Bundled harness runtime for the DeepSeek Harness Desktop shell. Pinned to one exact upstream release for a consistent dependency tree.",
+  "dependencies": {
+    "@deepseek-ai/dsh": "0.1.0-rc.8"
+  }
+}

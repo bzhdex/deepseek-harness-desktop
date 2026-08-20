@@ -1,0 +1,85 @@
+# electron-builder configuration for the Windows desktop wrapper.
+# See README.zh.md for the full build/package flow.
+
+appId: com.deepseek.harness.desktop
+productName: DeepSeek Harness
+copyright: Copyright © 2026 DeepSeek Harness Desktop contributors (MIT)
+
+directories:
+  buildResources: build
+  output: dist
+
+# Only the shell source ships inside the asar. The harness runtime and the
+# bundled Node.js are unpacked resources so the subprocess can execute them.
+files:
+  - "src/**/*"
+  - "!**/*.map"
+  - "!**/*.md"
+
+extraResources:
+  - from: resources/runtime
+    to: runtime
+  # The harness closure's node_modules must be copied explicitly: electron-builder's
+  # file filter hardcodes exclusion of a *root* `node_modules` directory under any
+  # `from`. Pointing `from` straight at node_modules sidesteps that special case.
+  - from: resources/harness/node_modules
+    to: harness/node_modules
+  - from: resources/harness
+    to: harness
+    filter:
+      - "!node_modules/**"
+  - from: resources/launcher
+    to: launcher
+  - from: resources/icons
+    to: icons
+  - from: third-party
+    to: third-party
+
+asar: true
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.png
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: DeepSeek Harness
+  artifactName: ${productName}-Setup-${version}.${ext}
+  uninstallDisplayName: DeepSeek Harness
+  # Keep user data (sessions/settings/plugins) on uninstall by default.
+  deleteAppDataOnUninstall: false
+  # Chinese + English install wizard.
+  multiLanguageInstaller: true
+  installerLanguages:
+    - en_US
+    - zh_CN
+  runAfterFinish: true
+
+# ---------------------------------------------------------------------------
+# Auto-update feed. electron-updater reads this block (baked into the built
+# app-update.yml). For GitHub Releases, replace with:
+#
+#   publish:
+#     provider: github
+#     owner: <your-github-user-or-org>
+#     repo: <your-repo>
+#
+# For a private HTTP mirror:
+#
+#   publish:
+#     provider: generic
+#     url: https://updates.example.com/dsh-desktop/${channel}
+#
+# Leave commented out to disable updates entirely (the app still runs offline).
+# ---------------------------------------------------------------------------
+# publish:
+#   provider: generic
+#   url: https://updates.example.invalid/dsh-desktop/

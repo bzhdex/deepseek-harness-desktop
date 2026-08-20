@@ -1,0 +1,10 @@
+# Upstream DeepSeek Harness source — reference only, fetched from the upstream
+# GitHub repo. This repository contains just the desktop wrapper (desktop/).
+deepseek-harness-master/
+*.zip
+
+# OS / editor noise
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
